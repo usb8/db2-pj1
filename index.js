@@ -3,6 +3,13 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 // const fetch = require('node-fetch')
+// import fetch from 'node-fetch'
+// --> Error [ERR_REQUIRE_ESM]: require() of ES Module
+// Way 1: downgrade via npm install node-fetch@2
+// const fetch = require('node-fetch')
+// Way 2:
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args))
+
 require('dotenv').config()
 
 const app = express()
@@ -15,7 +22,20 @@ app.get('/', (req, res) => {
 })
 
 app.get('/burgers', (req, res) => {
-  res.send('Burgers')
+  // res.send('Burgers')
+  const url = process.env.ENDPOINT
+
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'X-Cassandra-Token': process.env.ASTRA_TOKEN
+    }
+  }
+  fetch(url, options)
+    .then(response => response.json())
+    .then(json => res.json(json))
+    .catch(err => console.log('error:' + err))
 })
 
 function notFound(req,res,next) {
