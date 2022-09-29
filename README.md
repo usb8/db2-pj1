@@ -1,8 +1,8 @@
 # Front-end
-  - script: start-dev:fe
+  - script: npm run start-dev:fe
   - port: 3000
 # Back-end
-  - script: start-dev:be
+  - script: npm run start-dev:be
   - port: 3001
 # Requisite
   ✅ Register (if needed) and Sign In to Astra https://astra.datastax.com: You can use your Github, Google accounts or register with an email.
